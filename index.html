@@ -1,0 +1,30 @@
+
+
+        document.getElementById('resNetSalary').innerText = netTotal.toFixed(2);
+        document.getElementById('resNdfl').innerText = ndfl.toFixed(2);
+        document.getElementById('resFunds').innerText = funds.toFixed(2);
+        document.getElementById('resVacation').innerText = vacation.toFixed(2);
+        document.getElementById('resSick').innerText = sick.toFixed(2);
+        document.getElementById('resExpenses').innerText = expenses.toFixed(2);
+        document.getElementById('resHire').innerText = hire.toFixed(2);
+        document.getElementById('resHr').innerText = hr.toFixed(2);
+        document.getElementById('resAccountant').innerText = acc.toFixed(2);
+        document.getElementById('resTotalMonth').innerText = companyCost.toFixed(2);
+
+        document.getElementById('compMonth').innerText = companyCost.toFixed(0);
+        document.getElementById('compShift').innerText = (companyCost / shiftsPerMonth).toFixed(2) + ' ₽/смена';
+        document.getElementById('compHour').innerText = (companyCost / (shiftsPerMonth * hoursPerShift)).toFixed(2) + ' ₽/час';
+
+        document.getElementById('ourMonth').innerText = ourMonth.toFixed(0);
+        document.getElementById('ourShift').innerText = ourShift.toFixed(2) + ' ₽/смена';
+        document.getElementById('ourHour').innerText = ourHour.toFixed(2) + ' ₽/час';
+    }
+
+    window.onload = function() {
+        calculate();
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => input.addEventListener('input', calculate));
+    };
+</script>
+</body>
+</html>
