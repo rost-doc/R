@@ -1,30 +1,90 @@
 
 
-        document.getElementById('resNetSalary').innerText = netTotal.toFixed(2);
-        document.getElementById('resNdfl').innerText = ndfl.toFixed(2);
-        document.getElementById('resFunds').innerText = funds.toFixed(2);
-        document.getElementById('resVacation').innerText = vacation.toFixed(2);
-        document.getElementById('resSick').innerText = sick.toFixed(2);
-        document.getElementById('resExpenses').innerText = expenses.toFixed(2);
-        document.getElementById('resHire').innerText = hire.toFixed(2);
-        document.getElementById('resHr').innerText = hr.toFixed(2);
-        document.getElementById('resAccountant').innerText = acc.toFixed(2);
-        document.getElementById('resTotalMonth').innerText = companyCost.toFixed(2);
+            <div class="comparison">
+                <div class="comparison-item">
+                    <div class="label">Сейчас вы платите</div>
+                    <div class="value company-cost" id="compMonth">0</div>
+                    <div class="sub" id="compShift">0 ₽/смена</div>
+                    <div class="sub" id="compHour">0 ₽/час</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="label">Арендовать у нас</div>
+                    <div class="value our-price" id="ourMonth">89 936</div>
+                    <div class="sub" id="ourShift">4 088 ₽/смена</div>
+                    <div class="sub" id="ourHour">511 ₽/час</div>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #6b7280; margin-top: 10px;">Предварительная оценка. Не является офертой, необходимо подтверждение специалиста.</p>
+        </div>
+    </div>
 
-        document.getElementById('compMonth').innerText = companyCost.toFixed(0);
-        document.getElementById('compShift').innerText = (companyCost / shiftsPerMonth).toFixed(2) + ' ₽/смена';
-        document.getElementById('compHour').innerText = (companyCost / (shiftsPerMonth * hoursPerShift)).toFixed(2) + ' ₽/час';
+    <hr>
 
-        document.getElementById('ourMonth').innerText = ourMonth.toFixed(0);
-        document.getElementById('ourShift').innerText = ourShift.toFixed(2) + ' ₽/смена';
-        document.getElementById('ourHour').innerText = ourHour.toFixed(2) + ' ₽/час';
-    }
+    <!-- Контактная форма с вашими данными -->
+    <div class="contact-form">
+        <h2 style="margin-top: 0; margin-bottom: 20px;">Поможем уйти от серых зарплат без увеличения стоимости</h2>
+        <!-- ОБНОВЛЕНО: форма отправляется через Formspree -->
+        <form action="https://formspree.io/f/ваш_ключ" method="POST" class="form-grid">
+            <div class="form-group">
+                <label>Ваше имя *</label>
+                <input type="text" name="name" placeholder="Имя" required>
+            </div>
+            <div class="form-group">
+                <label>Телефон *</label>
+                <input type="tel" name="phone" placeholder="+7 (___) ___ __ __" required>
+            </div>
+            <div class="form-group">
+                <label>E-mail адрес *</label>
+                <input type="email" name="email" value="lazarev.atur@yandex.ru" required>
+            </div>
+            <button type="submit" class="submit-btn">Получить расчёт</button>
+        </form>
+        <div class="footer-note">
+            * Заполните форму, и мы свяжемся с вами. Или звоните: <strong>[ваш телефон]</strong>
+        </div>
+    </div>
+</div>
 
-    window.onload = function() {
-        calculate();
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => input.addEventListener('input', calculate));
-    };
-</script>
-</body>
-</html>
+<script>
+    // --- Логика калькулятора (без изменений) ---
+    function calculate() {
+        let white = parseFloat(document.getElementById('whiteSalary').value) || 0;
+        let gray = parseFloat(document.getElementById('graySalary').value) || 0;
+        let whiteType = document.querySelector('input[name="whiteType"]:checked').value;
+        let hoursPerShift = parseFloat(document.getElementById('hoursPerShift').value) || 8;
+        let shiftsPerMonth = 22;
+
+        let whiteGross = white;
+        if (whiteType === 'hand') {
+            whiteGross = white / 0.87;
+        }
+
+        let ndfl = whiteGross * 0.13;
+        let netWhite = whiteGross - ndfl;
+        let netTotal = netWhite + gray;
+
+        let funds = whiteGross * 0.302;
+        let vacation = (whiteGross + funds) / 11;
+        let sick = (whiteGross + funds + vacation) / shiftsPerMonth;
+
+        let expenses = 
+            (parseFloat(document.getElementById('expLunch').value) || 0) * shiftsPerMonth +
+            (parseFloat(document.getElementById('expTea').value) || 0) +
+            (parseFloat(document.getElementById('expGloves').value) || 0) +
+            (parseFloat(document.getElementById('expRespirators').value) || 0) +
+            (parseFloat(document.getElementById('expHelmets').value) || 0) +
+            (parseFloat(document.getElementById('expBoots').value) || 0) +
+            (parseFloat(document.getElementById('expVests').value) || 0) +
+            (parseFloat(document.getElementById('expOveralls').value) || 0) +
+            (parseFloat(document.getElementById('expMedExam').value) || 0) +
+            (parseFloat(document.getElementById('expDms').value) || 0);
+
+        let hire = 1250;
+        let hr = 600;
+        let acc = 600;
+
+        let companyCost = whiteGross + funds + vacation + sick + expenses + hire + hr + acc + gray;
+
+        let ourMonth = 89936;
+        let ourShift = 4088;
+        let ourHour = 511;
